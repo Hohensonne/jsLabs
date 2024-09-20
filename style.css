@@ -33,8 +33,10 @@ div:has(#logo) {
 #MainMenu {
     position: absolute;
     right: 105px;
-    top: 45px;
+    top: 30px;
 }
+
+
 
 #MainMenu > li {
 	float: left;
