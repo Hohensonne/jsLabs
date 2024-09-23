@@ -13,6 +13,32 @@
             {
                 document.getElementById('text1').style.visibility=val;
             }
+
+            function getCurrentDate() 
+            {
+            var currentDate = new Date().toLocaleDateString('ru-RU');
+            document.getElementById('currentDate').innerHTML = currentDate;
+            }
+
+            function getRemains ()
+            {
+                var firstNumber = document.getElementById('firstNumber').value;
+                var secondNumber = document.getElementById('secondNumber').value;
+                alert(firstNumber % secondNumber);
+            }
+
+            function minus67 () 
+            {
+                var number = prompt('Введите число');
+                number = parseInt(number, 10);
+                alert(number - 67);
+            }
+
+            function mathFunc () 
+            {
+                var x = parseFloat(document.getElementById('argX').value)
+                alert(Math.cos(x + 4 * Math.PI) * Math.cos(3 * x - (5 * Math.PI) / 3) + (2 * Math.sin((4 * Math.PI) / 7 - 5 * x)) * (2 * x - (3 * Math.PI) / 4));
+            }
         </script>
 
         <div>
@@ -26,6 +52,25 @@
         </div>
         <div>
             <h2>Задание 2</h2>
+            <button onclick="getCurrentDate()">Получить время</button>
+            <div id="currentDate">
+
+            </div>
+        </div>
+        <div>
+            <h2>Задание 3</h2>
+            <input type="number" name="" id="firstNumber">
+            <input type="number" name="" id="secondNumber">
+            <button onclick="getRemains()">Находитель остатка</button>
+        </div>
+        <div>
+            <h2>Задание 4</h2>
+            <button onclick="minus67()">Вычесть 67</button>
+        </div>
+        <div>
+            <h2>Задание 5</h2>
+            <input type="text" name="" id="argX" placeholder="значение x">
+            <button onclick="mathFunc()">Посчитать формулу<br>𝑦=𝑐𝑜𝑠(𝑥+4𝜋)∗𝑐𝑜𝑠(3𝑥−5𝜋/3)+(2sin⁡(4𝜋/7−5𝑥))∗(2x−3𝜋/4)</button>
         </div>
     </body>
 </html>
