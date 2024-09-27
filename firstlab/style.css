@@ -175,3 +175,9 @@ footer img {
     width: 24px;
     height: 24px;
 }
+
+
+iframe {
+    width: 600px;
+    height: 400px;
+}
