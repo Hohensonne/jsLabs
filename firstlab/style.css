@@ -10,12 +10,18 @@ body {
     margin: 0;
 }
 
-
+header {
+    display: flex;
+    justify-content: flex-end;
+    box-sizing: border-box;
+}
 
 
 div:has(#logo) {
     margin-top: 50px;
-    margin-left: 110px;
+    margin-right: 110px;
+    margin-left: auto;
+    box-sizing: border-box;
 }
 
 #logo {
@@ -32,8 +38,9 @@ div:has(#logo) {
 
 #MainMenu {
     position: absolute;
-    right: 105px;
+    left: 110px;
     top: 30px;
+    padding: 0;
 }
 
 
@@ -41,15 +48,11 @@ div:has(#logo) {
 #MainMenu > li {
 	float: left;
 	list-style-type: none;
-    margin: 0px 5px;
+    margin: 0px calc(5px*1.5);
 }
 
 #MainMenu li{
     position:relative;
-}
-
-#MainMenu ul{
-    top: 35px;
 }
 
 #MainMenu li:hover ul {
@@ -57,7 +60,6 @@ div:has(#logo) {
 }
 #MainMenu ul {
     display:none;
-    
 }
 
 #MainMenu a:hover, #MainMenu li:hover > a{
