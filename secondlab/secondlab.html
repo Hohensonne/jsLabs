@@ -39,7 +39,7 @@
     }
 
     function getCurrentDate() {
-      var currentDate = new Date().toLocaleDateString("ru-RU");
+      var currentDate = new Date().toLocaleDateString("ru-RU").replace(/\./g, ":");;
       document.getElementById("currentDate").innerHTML = currentDate;
     }
 
@@ -73,9 +73,8 @@
       var result = number - 67;
       document.getElementById("result").innerHTML = "Ответ: " + result;
 
-      // Блокируем кнопку "Вычесть 67"
       document.getElementById("minus67Btn").disabled = true;
-      // Активируем кнопку "Ещё минус 28"
+      
       document.getElementById("minus28Btn").disabled = false;
     }
 
