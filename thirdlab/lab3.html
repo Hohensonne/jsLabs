@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+
+    <div class="div_enumiration">
+        <p class="p_enumiration"><u>1 задание</u></p>
+        <p>Щелкните на элемент, чтобы поднять его в списке.</p>
+        <ol id="ol_main">
+            <li onclick="move(this)">Мясо</li>
+            <li onclick="move(this)">Молоко</li>
+            <li onclick="move(this)">Яйца</li>
+            <li onclick="move(this)">Рыба</li>
+            <li onclick="move(this)">Соки</li>
+            <li onclick="move(this)">Воды</li>
+        </ol>
+        <button onclick="btn_Add()">Add</button>
+        <button onclick="btn_Remove()">Remove</button>
+
+        <script>
+            function move(o){
+                let parent = o.parentNode;
+                parent.removeChild(o);
+                parent.insertBefore(o, parent.firstChild);
+            }
+
+            let tmp_index = 0;
+            function btn_Add(){        
+                let parent = document.getElementById('ol_main')
+                let entity = document.createElement('li');
+                entity.innerHTML = `entity_${tmp_index}`;
+                entity.addEventListener("click", function (){
+                    move(this);
+                });        
+                parent.appendChild(entity);
+                tmp_index++;        
+            }
+            
+            function btn_Remove(){
+                let parent = document.getElementById('ol_main')
+                let entity = parent.getElementsByTagName('li');
+                parent.removeChild(entity[entity.length - 1]);                            
+            }    
+
+        </script>    
+    </div>
+
+    <div class="div_enumiration">
+        <p class="p_enumiration"><u>2 задание</u></p>
+
+
+        <table id="table_1">
+            <thead>
+                <tr>
+                    <th>Параметр</th>
+                    <th>Значение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Платформа (ОС)</td>
+                    <td id="platform"></td>
+                </tr>
+                <tr>
+                    <td>Браузер</td>
+                    <td id="browser"></td>
+                </tr>
+                <tr>
+                    <td>Разрешение экрана (ширина)</td>
+                    <td id="screenWidth"></td>
+                </tr>
+                <tr>
+                    <td>Разрешение экрана (высота)</td>
+                    <td id="screenHeight"></td>
+                </tr>
+                <tr>
+                    <td>Ширина доступной области (innerWidth)</td>
+                    <td id="innerWidth"></td>
+                </tr>
+                <tr>
+                    <td>Высота доступной области (innerHeight)</td>
+                    <td id="innerHeight"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <script>
+
+            // Получение информации о платформе
+            const platform = navigator.platform;
+            document.getElementById('platform').textContent = platform;
+
+            // Получение информации о браузере
+            const browser = navigator.userAgent;
+            document.getElementById('browser').textContent = browser;
+
+            // Получение разрешения экрана
+            const screenWidth = screen.width;
+            const screenHeight = screen.height;
+            document.getElementById('screenWidth').textContent = screenWidth;
+            document.getElementById('screenHeight').textContent = screenHeight;
+
+            // Получение размеров доступной области
+            const innerWidth = window.innerWidth;
+            const innerHeight = window.innerHeight;
+            document.getElementById('innerWidth').textContent = innerWidth;
+            document.getElementById('innerHeight').textContent = innerHeight;
+
+        </script>
+
+        <button id="myButton">Нажми на меня!</button>
+
+        <script>
+            const button = document.getElementById('myButton');
+            let buttonWidth = 400;
+
+            button.addEventListener('click', () => {
+                buttonWidth -= 22;
+                button.style.width = buttonWidth + 'px';
+
+                if (buttonWidth < 100) {
+                    button.disabled = true;
+                    button.style.background = '#000000';
+                    alert("Всё! Пикселей больше нет, но вы держитесь!");
+                }
+            });
+        </script>
+
+        
+
+
+    <p id="myParagraph">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat. Duis semper.
+    </p>
+
+    <button id="button1">Темно-красный, 12pt</button>
+    <button id="button2">Коричневый, 30pt</button>
+
+    <script>
+        const paragraph = document.getElementById('myParagraph');
+        const button1 = document.getElementById('button1');
+        const button2 = document.getElementById('button2');
+
+        button1.addEventListener('click', () => {
+            paragraph.style.color = 'darkred';
+            paragraph.style.fontSize = '12pt';
+        });
+
+        button2.addEventListener('click', () => {
+            paragraph.style.color = 'brown';
+            paragraph.style.fontSize = '30pt';
+        });
+    </script>
+    </div>
+
+
+
+
+
+
+
+    <div class="div_enumiration">
+        <p class="p_enumiration"><u>3 задание</u></p>
+
+
+
+        <table id="sampleTable" style="border: 1px #000000 solid;">
+        <tr><td>Row1 cell1</td>
+        <td>Row1 cell2</td></tr>
+        <tr><td>Row2 cell1</td>
+        <td>Row2 cell2</td></tr>
+        </table><br>
+        <input type="button" onclick="insert_Row()" value="Insert row"> 
+
+
+        <script>
+            function insert_Row(){
+                let Table1 = document.getElementById('sampleTable');                
+                let Row = document.createElement('tr');
+                let td_1 = document.createElement('td');
+                let td_2 = document.createElement('td');
+                let row_index = Table1.getElementsByTagName('tr').length;                
+                td_1.innerHTML = "Кар";
+                td_2.innerHTML = row_index + 1;               
+                Table1.appendChild(Row);
+                Row.appendChild(td_1);
+                Row.appendChild(td_2);
+            }
+        </script>
+    </div>
+
+
+
+
+    <div class="div_enumiration">
+        <p class="p_enumiration"><u>4 задание</u></p>
+
+        <p><a id="example" type="text/html" hreflang="en-us" rel="nofollow" target="_self" href="http://www.example.com/">Example.com</a></p>
+        <button onclick="getAttributes()">Click here to get the attribute's value</button>  
+
+        <script>
+            function getAttributes(){
+                let atrs = document.getElementById('example').attributes;
+                let str = '';
+                for (let i = 0; i < atrs.length; i++) { 
+                    str += `${atrs[i].name}: ${atrs[i].value}\n`;                    
+                }
+                alert(str);
+            }
+        </script>
+    </div>
+
+
+
+
+
+
+
+    <div class="div_enumiration">
+        <p class="p_enumiration"><u>5 задание</u></p>
+
+        <section id="dataTable"></section>
+
+        <button onclick="addTable()">Создать таблицу</button>
+
+        <script>
+            function addTable() {
+                const dataTable = document.getElementById('dataTable');
+                const str = "Караб";
+
+                // Проверка, существует ли уже таблица
+                if (dataTable.querySelector('table')) {
+                    alert('Таблица уже создана!');
+                    return;
+                }
+
+                // Создание таблицы
+                const table = document.createElement('table');
+
+                // Создание строк
+                for (let i = 0; i < 3; i++) {
+                    const row = document.createElement('tr');
+
+                    // Создание ячеек в каждой строке
+                    for (let j = 0; j < 5; j++) {
+                    const cell = document.createElement('td');
+                    const textNode = document.createTextNode(str[j]); // Используем первые 5 букв фамилии "Караб"
+                    cell.appendChild(textNode);
+                    row.appendChild(cell);
+                    }
+
+                    table.appendChild(row);
+                }
+
+                // Добавление таблицы в div
+                dataTable.appendChild(table);
+            }
+        </script>
+
+    </div>
+    <div class="div_enumiration">
+        <p class="p_enumiration"><u>6 задание</u></p>
+        <section id="section_in_6">
+            <a href="#1">OpenAI</a><br>
+            <a href="#2">YouTube</a><br>
+            <a href="#3">Wikipedia</a><br>
+            <a href="#4">Amazon</a><br>
+            <a href="#5">Facebook</a><br>
+
+            <button onclick="showLinkInfo()">Показать информацию о ссылках</button>
+
+            <script>
+                function showLinkInfo() {
+                    let parent = document.getElementById('section_in_6');
+                    const links = parent.getElementsByTagName('a');
+                    const totalLinks = links.length;
+
+                    alert(`Общее количество ссылок: ${totalLinks}\n` +
+                        `Первая ссылка: ${links[0].href}\n` +
+                        `Последняя ссылка: ${links[totalLinks - 1].href}`);
+                    }
+            </script>
+        </section>
+    </div>
+
+
+
+</body>
+
+
+
+
+
+
+
+
+<style>
+.div_enumiration{
+    border: 5px #000000 solid;
+    margin: 10px;
+    padding: 10px;
+}
+
+.p_enumiration{
+    text-align: center;
+    font-size: 30px;
+    margin: 0;
+    margin-bottom: 30px;
+}
+
+#table_1, #dataTable table{
+    border-spacing: 0px;
+}
+
+#table_1 td, #dataTable table td{
+border: 1px #000000 solid;
+padding: 0;
+}
+
+
+
+
+#myButton{
+    width: 400px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+</style>
+</html>
