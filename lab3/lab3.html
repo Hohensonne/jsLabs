@@ -61,7 +61,7 @@
     
     <button id="resizeButton" onclick="resizeButton()">Уменьшить ширину кнопки</button>
 
-    <p id="text">Произвольный абзац текста. JavaScript может менять его стиль!</p>
+    <p id="text">JavaScript is a powerful, complicated, and often misunderstood computer language. It enables the rapid development of applications in which users can enter data and view results easily</p>
     <button onclick="changeStyle('darkred', '12pt')">Маленький темно-красный текст</button>
     <button onclick="changeStyle('brown', '30pt')">Большой коричневый текст</button>
 </section>
@@ -69,8 +69,8 @@
 <section id="section3">
     <h2>Добавление строк в таблицу</h2>
     <table id="sampleTable" border="1">
-        <tr><td>Row1 cell1</td><td>Row1 cell2</td></tr>
-        <tr><td>Row2 cell1</td><td>Row2 cell2</td></tr>
+        <tr><td>Строка1 Столбец1</td><td>Строка1 Столбец2</td></tr>
+        <tr><td>Строка2 Столбец1</td><td>Строка2 Столбец2</td></tr>
     </table><br>
     <button onclick="addRow()">Добавить строку</button>
 </section>
@@ -90,9 +90,9 @@
 <section id="section6">
     <h2>Количество ссылок</h2>
     <p>Разные ссылки на странице:</p>
-    <a href="http://example1.com">Example1</a><br>
-    <a href="http://example2.com">Example2</a><br>
-    <a href="http://example3.com">Example3</a><br>
+    <a href="https://ricktube.ru/watch/dQw4w9WgXcQ">Никогда не нажимайте сюда</a><br>
+    <a href="https://lms.mai.ru/">LMS</a><br>
+    <a href="https://learn.javascript.ru/">Современный учебник JavaScript</a><br>
     <button onclick="countLinks()">Показать количество ссылок</button>
 </section>
 
@@ -120,7 +120,7 @@
     function resizeButton() {
         var button = document.getElementById('resizeButton');
         var width = button.offsetWidth;
-        if (width > 100) {
+        if (width >= 100) {
             button.style.width = (width - 22) + 'px';
         } else {
             button.disabled = true;
@@ -140,7 +140,7 @@
         var row = table.insertRow();
         for (var i = 0; i < 2; i++) {
             var cell = row.insertCell(i);
-            cell.textContent = 'Буква ' + (i + 1) + ' ' + (rowCount + 1);
+            cell.textContent = 'Алимов ' + (i + 1) + ' ' + (rowCount + 1);
         }
     }
 
@@ -162,11 +162,12 @@
 
         var table = document.createElement('table');
         table.border = 1;
+        let arr = 'Алимо'
         for (var i = 0; i < 3; i++) {
             var row = document.createElement('tr');
             for (var j = 0; j < 5; j++) {
                 var cell = document.createElement('td');
-                cell.textContent = 'Буква ' + (j + 1);
+                cell.textContent = arr[j];
                 row.appendChild(cell);
             }
             table.appendChild(row);
