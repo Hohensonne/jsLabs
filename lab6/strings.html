@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Строковые операции</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body class="container mt-4">
+  <h2>Строковые операции</h2>
+
+  <!-- Абзац с текстом -->
+  <div class="mb-3">
+    <label for="textParagraph" class="form-label">Абзац текста:</label>
+    <textarea id="textParagraph" class="form-control" rows="3">Пример текста из художественного произведения.</textarea>
+  </div>
+
+  <!-- Подсчет букв -->
+  <button class="btn btn-primary mb-2" onclick="countInitials()">Подсчитать буквы</button>
+  <p id="initialsCount"></p>
+
+  <!-- Подсчет слов -->
+  <button class="btn btn-primary mb-2" onclick="countWords()">Подсчитать слова</button>
+  <p id="wordCount"></p>
+
+  <!-- Преобразование нечётных/чётных слов -->
+  <div id="sentenceDiv" class="mb-3">
+    <p id="sentence">Это пример строки из нескольких предложений для преобразования.</p>
+  </div>
+  <button class="btn btn-secondary mb-2" onclick="transformWords()">Преобразовать слова</button>
+
+  <!-- Удаление 4-й буквы из фамилии -->
+  <button class="btn btn-danger mb-2" onclick="removeFourthLetter()">Удалить 4-ю букву из фамилии</button>
+  <p id="transformedText"></p>
+
+  <!-- Проверка имени файла -->
+  <div class="mb-3">
+    <label for="fileName" class="form-label">Имя файла:</label>
+    <input type="text" id="fileName" class="form-control" oninput="validateFileName()">
+    <span id="fileNameMessage"></span>
+  </div>
+
+  <script>
+    function countInitials() {
+      const text = document.getElementById('textParagraph').value.toLowerCase();
+      const count1 = (text.match(/и/g) || []).length;
+      const count2 = (text.match(/в/g) || []).length;
+      document.getElementById('initialsCount').innerText = `Количество букв 'и': ${count1}, 'в': ${count2}`;
+    }
+
+    function countWords() {
+      const text = document.getElementById('textParagraph').value;
+      const words = text.trim().split(/\s+/).length;
+      document.getElementById('wordCount').innerText = `Количество слов: ${words}`;
+    }
+
+    function transformWords() {
+      const sentence = document.getElementById('sentence').innerText;
+      const words = sentence.split(' ');
+      const transformed = words.map((word, index) => index % 2 === 0 ? word.toUpperCase() : word.toLowerCase()).join(' ');
+      document.getElementById('transformedText').innerText = transformed;
+    }
+
+    function removeFourthLetter() {
+      const sentence = document.getElementById('sentence').innerText;
+      const letter = 'н';
+      const result = sentence.replace(new RegExp(letter, 'gi'), '');
+      document.getElementById('transformedText').innerText = result;
+    }
+
+    function validateFileName() {
+      const fileName = document.getElementById('fileName').value;
+      const valid = /^[\w,\s-]+\.(doc|xls|ppt)$/i.test(fileName);
+      const message = document.getElementById('fileNameMessage');
+      message.textContent = valid ? 'Имя файла корректно' : 'Неверное имя файла';
+      message.className = valid ? 'success' : 'error';
+    }
+  </script>
+</body>
+</html>
