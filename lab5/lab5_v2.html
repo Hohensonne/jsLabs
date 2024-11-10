@@ -25,8 +25,6 @@
         border: none;
       }
 
-    
-
       .container {
         margin-top: 30px;
         margin-bottom: 30px;
@@ -147,6 +145,7 @@
         </button>
       </div>
     </div>
+
     <script type="text/javascript">
       window.onload = function () {
         var date = new Date();
@@ -286,7 +285,7 @@
         let color = true;
 
         colorInterval = setInterval(() => {
-          table.style.backgroundColor = color ? "yellow" : "green";
+          table.style.backgroundColor = color ? "red" : "blue";
           color = !color;
         }, 100);
       }
