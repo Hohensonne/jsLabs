@@ -1,223 +1,299 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab 5</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+      <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            padding: 20px;
-            font-family: Arial, sans-serif;
-        }
-        #today {
-            font-size: 20px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }
-        #maiProgress {
-            width: 100%;
-            height: 30px;
-            position: relative;
-            background-color: #ddd;
-            margin-top: 10px;
-        }
-        #maiBar {
-            background-color: #0480b6;
-            width: 10px;
-            height: 30px;
-            position: absolute;
-        }
-        table {
-            width: 200px;
-            height: 100px;
-            border: 1px solid black;
-        }
+      * {
+        padding: 0px;
+        margin: 0px;
+        border: none;
+      }
+
+    
+
+      .container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+
+      .section {
+        font-family: "Roboto", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        background-color: #bdbdbd27;
+        border-radius: 10px;
+        padding: 30px;
+      }
+
+      #maiProgress {
+        width: 100%;
+        height: 30px;
+        position: relative;
+        background-color: #ddd;
+      }
+
+      #maiBar {
+        background-color: #0480b6;
+        width: 10px;
+        height: 30px;
+        position: absolute;
+      }
+      table {
+        width: 200px;
+        height: 100px;
+        border: 1px solid black;
+        transition: background-color 0.2s ease;
+      }
     </style>
-</head>
-<body>
-    <!-- Раздел "Сегодня" -->
-    <div id="today"></div>
-
-    <!-- Раздел "Таймер" -->
-    <div class="mb-4">
-        <h3>Таймер</h3>
-        <input type="text" id="secondsInput" placeholder="Введите секунды">
-        <button class="btn btn-primary" id="startTimer" onclick="startTimer()">Запустить таймер</button>
+  </head>
+  <body>
+    <div class="container">
+      <div id="Section-1" class="section mb-4">
+        Раздел 1
+        <h3 id="calendar"></h3>
+      </div>
+      <div id="Section-2" class="section mb-4">
+        Раздел 2
+        <h4>Таймер</h4>
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            id="secondsInput"
+            placeholder="Введите секунды"
+          />
+          <button
+            class="btn btn-primary"
+            id="startTimer"
+            onclick="startTimer()"
+          >
+            Запустить таймер
+          </button>
+        </div>
         <p id="timerOutput"></p>
-    </div>
-
-    <!-- Раздел "Мой день рождения" -->
-    <div class="mb-4">
-        <h3>Мой день рождения</h3>
-        <p id="birthdayInfo">Мой следующий день рождения 00.00.0000, до него осталось 00 дней</p>
-    </div>
-
-    <!-- Раздел "Добавление в массив" -->
-    <div class="mb-4">
-        <h3>Добавить элемент в массив</h3>
-        <input type="text" id="arrayInput">
-        <button class="btn btn-success" onclick="addToArray()">Добавить</button>
-        <button class="btn btn-info" onclick="showArray()">Показать</button>
+      </div>
+      <div id="Section-3" class="section mb-4">
+        Раздел 3
+        <h4>Мой день рождения</h4>
+        <p id="birthdayInfo">
+          Мой следующий день рождения 00.00.0000, до него осталось 00 дней
+        </p>
+      </div>
+      <div id="Section-4" class="section mb-4">
+        Раздел 4
+        <h4>Добавить элемент в массив</h4>
+        <div class="input-group">
+          <input type="text" id="arrayInput" class="form-control" />
+          <button class="btn btn-success" onclick="addToArray()">
+            Добавить
+          </button>
+          <button class="btn btn-info" onclick="showArray()">Показать</button>
+        </div>
         <p id="arrayOutput"></p>
-    </div>
-
-    <!-- Раздел "Фильтрация массива" -->
-    <div class="mb-4">
-        <h3>Фильтрация массива</h3>
+      </div>
+      <div id="Section-5" class="section mb-4">
+        Раздел 5
+        <h4>Фильтрация массива</h4>
         <p>Массив до фильтрации: <span id="beforeFilter"></span></p>
         <p>Массив после фильтрации: <span id="afterFilter"></span></p>
-    </div>
+      </div>
 
-    <!-- Раздел "Работа с массивом случайных чисел" -->
-    <div class="mb-4">
+      <div id="Section-6" class="section mb-4">
+        Раздел 6
         <h3>Работа с массивом случайных чисел</h3>
-        <p>Массив, разделенный на 2: <span id="dividedArray"></span></p>
-        <p>Элементы, которые делятся на 3 с остатком 1: <span id="filteredArray"></span></p>
-        <p>Произведение всех элементов: <span id="arrayProduct"></span></p>
-    </div>
+        <p>
+          Массив, разделенный на 2:
+          <span id="dividedArray"></span>
+        </p>
 
-    <!-- Раздел "Прогресс обучения" -->
-    <div class="mb-4">
+        <p>
+          Элементы, которые делятся на 3 с остатком 1:
+          <span id="filteredArray"></span>
+        </p>
+        <p>Произведение всех элементов: <span id="arrayProduct"></span></p>
+      </div>
+
+      <div id="Section-7" class="section mb-4">
+        Раздел 7
         <h3>Прогресс обучения в МАИ</h3>
         <div id="maiProgress">
-            <div id="maiBar"></div>
+          <div id="maiBar"></div>
         </div>
         <p id="courseLabel">1 курс</p>
-        <button class="btn btn-primary" onclick="startBar()">Начать учиться!</button>
-        <br>
+        <button class="btn btn-primary" id="startBarBtn" onclick="startBar()">
+          Начать учиться!
+        </button>
+        <br />
         <table id="colorTable"></table>
-        <br>
-        <button class="btn btn-danger" onclick="stopChangingColor()">Закончить отмечать диплом</button>
+        <br />
+        <button class="btn btn-danger" onclick="stopChangingColor()">
+          Закончить отмечать диплом
+        </button>
+      </div>
     </div>
-
     <script type="text/javascript">
-        // 1. Раздел "Сегодня"
-        window.onload = function(){
-            var date = new Date();
-            var day = String(date.getDate()).padStart(2, '0');
-            var month = String(date.getMonth() + 1).padStart(2, '0');
-            var year = date.getFullYear();
-            document.getElementById("today").innerHTML = "Сегодня " + day + "." + month + "." + year;
-            updateBirthday();
-            showBeforeAfterFilter();
-        };
+      window.onload = function () {
+        var date = new Date();
+        var day = String(date.getDate()).padStart(2, "0");
+        var month = String(date.getMonth() + 1).padStart(2, "0");
+        var year = date.getFullYear();
+        document.getElementById("calendar").innerHTML =
+          "Сегодня " + day + "." + month + "." + year;
+        updateBirthday();
+        showBeforeAfterFilter();
+      };
 
-        // 2. Таймер
-        let timerInterval;
-        function startTimer() {
-            let seconds = parseInt(document.getElementById('secondsInput').value);
-            if (isNaN(seconds) || seconds <= 0) {
-                alert("Введите корректное количество секунд");
-                return;
-            }
-
-            document.getElementById('startTimer').disabled = true;
-            let totalTime = seconds;
-
-            timerInterval = setInterval(() => {
-                let hours = Math.floor(seconds / 3600);
-                let minutes = Math.floor((seconds % 3600) / 60);
-                let secs = seconds % 60;
-                document.getElementById('timerOutput').innerHTML = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-
-                if (seconds <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Таймер сработал!");
-                    document.getElementById('startTimer').disabled = false;
-                }
-                seconds--;
-            }, 1000);
+      let timerInterval;
+      function startTimer() {
+        let seconds = parseInt(document.getElementById("secondsInput").value);
+        if (isNaN(seconds) || seconds <= 0) {
+          alert("Введите корректное количество секунд");
+          return;
         }
 
-        // 3. Мой день рождения
-        function updateBirthday() {
-            let today = new Date();
-            let birthday = new Date(today.getFullYear(), 5, 18); // Пример дня рождения - 18 июня
-            if (today > birthday) birthday.setFullYear(today.getFullYear() + 1);
+        document.getElementById("startTimer").disabled = true;
+        let totalTime = seconds;
 
-            let daysLeft = Math.ceil((birthday - today) / (1000 * 60 * 60 * 24));
-            document.getElementById('birthdayInfo').innerHTML = `Мой следующий день рождения ${String(birthday.getDate()).padStart(2, '0')}.${String(birthday.getMonth() + 1).padStart(2, '0')}.${birthday.getFullYear()}, до него осталось ${daysLeft} дней`;
-        }
+        timerInterval = setInterval(() => {
+          let hours = Math.floor(seconds / 3600);
+          let minutes = Math.floor((seconds % 3600) / 60);
+          let secs = seconds % 60;
+          document.getElementById("timerOutput").innerHTML = `${String(
+            hours
+          ).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(
+            secs
+          ).padStart(2, "0")}`;
 
-        // 4. Добавление в массив
-        let array = [];
-        function addToArray() {
-            let value = document.getElementById('arrayInput').value;
-            array.push(value);
-            document.getElementById('arrayInput').value = '';
-        }
+          if (seconds <= 0) {
+            clearInterval(timerInterval);
+            alert("Таймер сработал!");
+            document.getElementById("startTimer").disabled = false;
+          }
+          seconds--;
+        }, 1000);
+      }
 
-        function showArray() {
-            let output = '';
-            array.forEach((value, index) => {
-                output += `Элемент ${index} = ${value}<br>`;
-            });
-            document.getElementById('arrayOutput').innerHTML = output;
-        }
+      function updateBirthday() {
+        let today = new Date();
+        let birthday = new Date(today.getFullYear(), 2, 7);
+        if (today > birthday) birthday.setFullYear(today.getFullYear() + 1);
 
-        // 5. Фильтрация массива
-        let originalArray = [NaN, 0, 15, false, -14, '', undefined, 53, null];
-        function filterArray(arr) {
-            return arr.filter(item => item !== null && item !== 0 && item !== "" && item !== false && item !== undefined && !isNaN(item));
-        }
+        let daysLeft = Math.ceil((birthday - today) / (1000 * 60 * 60 * 24));
+        document.getElementById(
+          "birthdayInfo"
+        ).innerHTML = `Мой следующий день рождения ${String(
+          birthday.getDate()
+        ).padStart(2, "0")}.${String(birthday.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}.${birthday.getFullYear()}, до него осталось ${daysLeft} дней`;
+      }
 
-        function showBeforeAfterFilter() {
-            document.getElementById('beforeFilter').innerText = JSON.stringify(originalArray);
-            document.getElementById('afterFilter').innerText = JSON.stringify(filterArray(originalArray));
-        }
+      let array = [];
+      function addToArray() {
+        let value = document.getElementById("arrayInput").value;
+        array.push(value);
+        document.getElementById("arrayInput").value = "";
+      }
 
-        // 6. Работа с массивом случайных чисел
-        let randomArray = Array.from({ length: 20 }, () => Math.floor(Math.random() * 100));
-        let dividedArray = randomArray.map(x => x / 2);
-        let filteredArray = dividedArray.filter(x => x % 3 === 1);
-        let product = randomArray.reduce((acc, curr) => acc * curr, 1);
+      function showArray() {
+        let output = "";
+        array.forEach((value, index) => {
+          output += `Элемент ${index} = ${value}<br>`;
+        });
+        document.getElementById("arrayOutput").innerHTML = output;
+      }
 
-        document.getElementById('dividedArray').innerText = JSON.stringify(dividedArray);
-        document.getElementById('filteredArray').innerText = JSON.stringify(filteredArray);
-        document.getElementById('arrayProduct').innerText = product;
+      let originalArray = [NaN, 0, 15, false, -14, "", undefined, 53, null];
+      function filterArray(arr) {
+        return arr.filter(
+          (item) =>
+            item !== null &&
+            item !== 0 &&
+            item !== "" &&
+            item !== false &&
+            item !== undefined &&
+            !isNaN(item)
+        );
+      }
 
-        // 7. Прогресс обучения
-        let barWidth = 0;
-        let colorInterval;
+      function showBeforeAfterFilter() {
+        document.getElementById("beforeFilter").innerText =
+          JSON.stringify(originalArray);
+        document.getElementById("afterFilter").innerText = JSON.stringify(
+          filterArray(originalArray)
+        );
+      }
 
-        function startBar() {
-            let progress = document.getElementById('maiBar');
-            let label = document.getElementById('courseLabel');
+      let randomArray = Array.from({ length: 20 }, () =>
+        Math.floor(Math.random() * 100)
+      );
+      let dividedArray = randomArray.map((x) => x / 2);
+      let filteredArray = dividedArray.filter((x) => x % 3 === 1);
+      let product = randomArray.reduce((acc, curr) => acc * curr, 1);
 
-            let interval = setInterval(() => {
-                barWidth += 10;
-                progress.style.width = barWidth + '%';
+      document.getElementById("dividedArray").innerText =
+        "[" + dividedArray + "]";
+      document.getElementById("filteredArray").innerText =
+        "[" + filteredArray + "]";
+      document.getElementById("arrayProduct").innerText = product;
 
-                if (barWidth < 25) {
-                    label.innerText = '1 курс';
-                } else if (barWidth < 50) {
-                    label.innerText = '2 курс';
-                } else if (barWidth < 75) {
-                    label.innerText = '3 курс';
-                } else if (barWidth < 100) {
-                    label.innerText = '4 курс';
-                } else {
-                    clearInterval(interval);
-                    startChangingColor();
-                }
-            }, 500);
-        }
+      let barWidth = 0;
+      let colorInterval;
 
-        function startChangingColor() {
-            let table = document.getElementById('colorTable');
-            let color = true;
+      function startBar() {
+        document.getElementById("startBarBtn").disabled = true;
+        let progress = document.getElementById("maiBar");
+        let label = document.getElementById("courseLabel");
 
-            colorInterval = setInterval(() => {
-                table.style.backgroundColor = color ? 'yellow' : 'green';
-                color = !color;
-            }, 1000);
-        }
+        let interval = setInterval(() => {
+          barWidth += 10;
+          progress.style.width = barWidth + "%";
 
-        function stopChangingColor() {
-            clearInterval(colorInterval);
-        }
+          if (barWidth < 25) {
+            label.innerText = "1 курс";
+          } else if (barWidth < 50) {
+            label.innerText = "2 курс";
+          } else if (barWidth < 75) {
+            label.innerText = "3 курс";
+          } else if (barWidth < 100) {
+            label.innerText = "4 курс";
+          } else {
+            clearInterval(interval);
+            startChangingColor();
+          }
+        }, 500);
+      }
+
+      function startChangingColor() {
+        let table = document.getElementById("colorTable");
+        let color = true;
+
+        colorInterval = setInterval(() => {
+          table.style.backgroundColor = color ? "yellow" : "green";
+          color = !color;
+        }, 100);
+      }
+
+      function stopChangingColor() {
+        clearInterval(colorInterval);
+      }
     </script>
-</body>
+  </body>
 </html>
