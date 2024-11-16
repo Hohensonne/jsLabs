@@ -10,67 +10,66 @@
     .success { color: green; }
   </style>
 </head>
-<body class="container mt-4">
+<body onLoad="updateCoffeeOptions()" class="container mt-4">
   <h2>Форма заказа кофе</h2>
-  <form id="orderForm">
-    <div class="mb-3">
-      <label class="form-label">Тип кофе:</label><br>
-      <input type="radio" name="coffeeType" value="arabica" checked onchange="updateCoffeeOptions()"> Арабика
-      <input type="radio" name="coffeeType" value="robusta" onchange="updateCoffeeOptions()"> Робуста
+  
+    <div class="mb-4">
+      Тип кофе: <br>
+      <input class="form-check-input" type="radio" name="coffeeType" value="arabica" checked onchange="updateCoffeeOptions()"> 
+      <label class="form-check-label">Арабика</label>
+      <input class="form-check-input" type="radio" name="coffeeType" value="robusta" onchange="updateCoffeeOptions()"> 
+      <label class="form-check-label">Робуста</label>
     </div>
 
-    <div class="mb-3">
-      <label for="coffeeVariety" class="form-label">Сорт кофе:</label>
+    <div class="mb-4">
+      Сорт кофе: </br>
       <select id="coffeeVariety" class="form-select">
-        <option value="Yirgacheffe">Yirgacheffe</option>
-        <option value="Sidamo">Sidamo</option>
-        <option value="Harrar">Harrar</option>
       </select>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <input type="checkbox" id="giftWrap" class="form-check-input">
-      <label for="giftWrap" class="form-check-label">Подарочная упаковка</label>
+      <span for="giftWrap" class="form-check-label">Подарочная упаковка</span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="index" class="form-label">Индекс:</label>
       <input type="text" id="index" class="form-control" onblur="validateIndex()">
       <span class="error" id="indexError"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="deliveryDate" class="form-label">Дата доставки:</label>
       <input type="text" id="deliveryDate" class="form-control" onblur="validateDate()">
       <span class="error" id="dateError"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="name" class="form-label">Имя и фамилия:</label>
       <input type="text" id="name" class="form-control" onblur="validateName()">
       <span class="error" id="nameError"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="phone" class="form-label">Телефон:</label>
       <input type="text" id="phone" class="form-control" onblur="validatePhone()">
       <span class="error" id="phoneError"></span>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
       <label for="email" class="form-label">Email:</label>
       <input type="email" id="email" class="form-control" onblur="validateEmail()">
       <span class="error" id="emailError"></span>
     </div>
 
     <button type="button" class="btn btn-primary" onclick="submitOrder()">Оформить заказ</button>
-  </form>
+  
 
   <p id="orderSummary" class="mt-4"></p>
 
   <script>
-    const arabicaOptions = ['Yirgacheffe', 'Sidamo', 'Harrar'];
-    const robustaOptions = ['Nganda', 'Congo', 'Java'];
+    const arabicaOptions = ['Бурбон', 'Типика', 'Марагоджип'];
+    const robustaOptions = ['Вьетнамская', 'Ангольская', 'Бразильская', 'Индонезийская'];
 
     function updateCoffeeOptions() {
       const coffeeType = document.querySelector('input[name="coffeeType"]:checked').value;

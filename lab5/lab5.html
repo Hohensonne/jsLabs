@@ -249,9 +249,9 @@
       let product = randomArray.reduce((acc, curr) => acc * curr, 1);
 
       document.getElementById("dividedArray").innerText =
-        "[" + dividedArray + "]";
+        JSON.stringify(dividedArray);
       document.getElementById("filteredArray").innerText =
-        "[" + filteredArray + "]";
+        JSON.stringify(filteredArray);
       document.getElementById("arrayProduct").innerText = product;
 
       let barWidth = 0;

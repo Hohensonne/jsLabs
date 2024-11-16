@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab 3</title>
     <style>
-      /* Общий стиль для страницы */
       body {
         font-family: "Arial", sans-serif;
         background-color: #f4f4f9;
@@ -15,7 +14,6 @@
         line-height: 1.6;
       }
 
-      /* Стили для заголовков */
       h2 {
         font-size: 1.8em;
         color: #333;
@@ -24,7 +22,6 @@
         border-bottom: 2px solid #3498db;
       }
 
-      /* Стили для div */
       div {
         background: #fff;
         padding: 20px;
@@ -33,7 +30,6 @@
         border-radius: 10px;
       }
 
-      /* Стили для кнопок */
       button {
         background-color: #3498db;
         color: white;
@@ -49,7 +45,6 @@
         background-color: #2980b9;
       }
 
-      /* Специальная кнопка для ресайза */
       #resizeButton {
         width: 400px;
         background-color: #2ecc71;
@@ -60,7 +55,6 @@
         background-color: #27ae60;
       }
 
-      /* Стили для таблиц */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -89,7 +83,6 @@
         background-color: #f4f4f9;
       }
 
-      /* Ссылки */
       a {
         color: #3498db;
         text-decoration: none;
@@ -101,7 +94,6 @@
         text-decoration: underline;
       }
 
-      /* Стили для списка */
       #itemList li {
         background-color: #f9f9f9;
         padding: 10px;
@@ -117,7 +109,6 @@
         transform: translateX(10px);
       }
 
-      /* Параграф с изменением стиля */
       #text {
         font-size: 1.2em;
         margin-top: 20px;
@@ -292,7 +283,7 @@
         var row = table.insertRow();
         for (var i = 0; i < 2; i++) {
           var cell = row.insertCell(i);
-          cell.textContent = "Алимов " + (i + 1) + " " + (rowCount + 1);
+          cell.textContent = "Алимов " + (rowCount + 1) + " " + (i + 1);
         }
       }
 
@@ -350,7 +341,6 @@
         );
       }
 
-      // Заполнение таблицы данными о системе
       document.getElementById("platform").textContent = navigator.platform;
       document.getElementById("browser").textContent = navigator.userAgent;
       document.getElementById("screenWidth").textContent = screen.width;
