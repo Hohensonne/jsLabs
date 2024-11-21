@@ -101,8 +101,9 @@
     function validateName() {
       const name = document.getElementById('name').value;
       const nameError = document.getElementById('nameError');
-      const valid = name.length >= 5 && name.length <= 35;
+      const valid = /^[a-zA-Zа-яА-Я ]{5,35}$/.test(name);
       nameError.textContent = valid ? '' : 'Длина имени и фамилии должна быть от 5 до 35 символов.';
+      alert(valid);
     }
 
     function validatePhone() {

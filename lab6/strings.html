@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Строковые операции</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    .error { color: red; }
-    .success { color: green; }
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
   </style>
 </head>
+
 <body class="container mt-4">
   <h2>Строковые операции</h2>
 
@@ -35,7 +42,7 @@
 
   <!-- Удаление 4-й буквы из фамилии -->
   <button class="btn btn-danger mb-2" onclick="removeFourthLetter()">Удалить 4-ю букву из фамилии</button>
-  <p id="transformedText"></p>
+  
 
   <!-- Проверка имени файла -->
   <div class="mb-3">
@@ -46,10 +53,14 @@
 
   <script>
     function countInitials() {
-      const text = document.getElementById('textParagraph').value.toLowerCase();
-      const count1 = (text.match(/и/g) || []).length;
-      const count2 = (text.match(/в/g) || []).length;
-      document.getElementById('initialsCount').innerText = `Количество букв 'и': ${count1}, 'в': ${count2}`;
+      const text = document.getElementById('textParagraph').value;
+      const firstLetterTotal = (text.match(/а/ig) || []).length;
+      const secondLetterTotal = (text.match(/л/ig) || []).length;
+      const firstLetterLower = (text.match(/а/g) || []).length;
+      const secondLetterLower = (text.match(/л/g) || []).length;
+      const firstLetterUpper = (text.match(/А/g) || []).length;
+      const secondLetterUpper = (text.match(/Л/g) || []).length;
+      document.getElementById('initialsCount').innerText = `Количество букв 'а': \n Всего: ${firstLetterTotal}, в нижнем регистре: ${firstLetterLower}, в верхнем регистре: ${firstLetterUpper} \n Количество букв 'л': \n Всего: ${secondLetterLower}, в нижнем регистре: ${secondLetterLower}, в верхнем регистре: ${secondLetterUpper}`;
     }
 
     function countWords() {
@@ -62,14 +73,14 @@
       const sentence = document.getElementById('sentence').innerText;
       const words = sentence.split(' ');
       const transformed = words.map((word, index) => index % 2 === 0 ? word.toUpperCase() : word.toLowerCase()).join(' ');
-      document.getElementById('transformedText').innerText = transformed;
+      document.getElementById('sentence').innerText = transformed;
     }
 
     function removeFourthLetter() {
       const sentence = document.getElementById('sentence').innerText;
-      const letter = 'н';
+      const letter = 'м';
       const result = sentence.replace(new RegExp(letter, 'gi'), '');
-      document.getElementById('transformedText').innerText = result;
+      document.getElementById('sentence').innerText = result;
     }
 
     function validateFileName() {
@@ -81,4 +92,5 @@
     }
   </script>
 </body>
+
 </html>
