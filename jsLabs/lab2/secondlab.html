@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <style>
+    table {
+      width: 310px;
+      height: 90px;
+      border-collapse: collapse;
+    }
+
+    td {
+      width: 100px;
+      height: 90px;
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .column1 {
+      background-color: red;
+    }
+
+    .column2 {
+      background-color: green;
+    }
+
+    .column3 {
+      background-color: blue;
+    }
+  </style>
+
+  <script>
+    function visibility(val) {
+      document.getElementById("text1").style.visibility = val;
+    }
+
+    function getCurrentDate() {
+      var currentDate = new Date().toLocaleDateString("ru-RU").replace(".", ":");;
+      document.getElementById("currentDate").innerHTML = currentDate;
+    }
+
+    function getRemains() {
+      var firstNumber = document.getElementById("firstNumber").value;
+      var secondNumber = document.getElementById("secondNumber").value;
+
+      firstNumber = parseFloat(firstNumber);
+      secondNumber = parseFloat(secondNumber);
+
+      if (isNaN(firstNumber) || isNaN(secondNumber)) {
+        alert("Оба значения должны быть числами.");
+        return;
+      }
+
+      if (secondNumber === 0) {
+        alert("Деление на ноль невозможно.");
+        return;
+      }
+
+      alert(firstNumber % secondNumber);
+    }
+
+    function minus67() {
+      var number = prompt("Введите число");
+      if (isNaN(number)) {
+        alert("Передаваемое значение должно быть числом");
+        return;
+      }
+      number = parseFloat(number);
+      var result = number - 67;
+      document.getElementById("result").innerHTML = "Ответ: " + result;
+
+      document.getElementById("minus67Btn").disabled = true;
+      document.getElementById("minus28Btn").disabled = false;
+    }
+
+    function minus28() {
+      var resultText = document.getElementById("result").innerHTML;
+      var currentNumber = parseFloat(resultText.replace("Ответ: ", ""));
+
+      if (isNaN(currentNumber)) {
+        alert("Ошибка при получении текущего значения.");
+        return;
+      }
+
+      currentNumber -= 28;
+      document.getElementById("result").innerHTML = "Ответ: " + currentNumber;
+    }
+
+    function mathFunc() {
+      var x = parseFloat(document.getElementById("argX").value);
+      alert(
+        Math.cos(x + 4 * Math.PI) * Math.cos(3 * x - (5 * Math.PI) / 3) +
+        2 *
+        Math.sin((4 * Math.PI) / 7 - 5 * x) *
+        (2 * x - (3 * Math.PI) / 4)
+      );
+    }
+
+    function getDaysInMonth() {
+      var monthNumber = document.getElementById("monthInput").value;
+      if (monthNumber == 0 || monthNumber > 12) {
+        alert("Неверный номер месяца. Введите значение от 1 до 12");
+        return;
+      }
+      monthNumber = parseInt(monthNumber, 10);
+
+      if (monthNumber === 2) {
+        alert("28 или 29");
+      } else if (
+        (monthNumber % 2 === 1 && monthNumber <= 7) ||
+        (monthNumber % 2 === 0 && monthNumber > 7)
+      ) {
+        alert("31");
+      } else {
+        alert("30");
+      }
+    }
+
+    function getDaysInMonthSwitch() {
+      var monthNumber = document.getElementById("monthInputSwitch").value;
+      monthNumber = parseInt(monthNumber, 10);
+
+      switch (monthNumber) {
+        case 2:
+          alert("28 или 29");
+          break;
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+        case 8:
+        case 10:
+        case 12:
+          alert("31");
+          break;
+        case 4:
+        case 6:
+        case 9:
+        case 11:
+          alert("30");
+          break;
+        default:
+          alert("Неверный номер месяца. Введите значение от 1 до 12.");
+      }
+    }
+
+    function changeBackgroundColor(color) {
+      document.body.style.backgroundColor = color;
+    }
+
+    function resetBackgroundColor() {
+      document.body.style.backgroundColor = "";
+    }
+  </script>
+</head>
+
+<body>
+  <div>
+    <h2>Задание 1</h2>
+    <p id="text1">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa quasi
+      consequatur, quidem rerum aliquid, omnis ut vitae nemo magnam harum
+      aperiam ratione consectetur quas velit unde qui. Perspiciatis, ab
+      asperiores.
+    </p>
+    <button onclick="visibility('hidden')">Текст невидимый</button>
+    <button onclick="visibility('visible')">Текст видимый</button>
+  </div>
+  <div>
+    <h2>Задание 2</h2>
+    <button onclick="getCurrentDate()">Получить дату</button>
+    <div id="currentDate"></div>
+  </div>
+  <div>
+    <h2>Задание 3</h2>
+    <input type="number" name="" id="firstNumber" />
+    <input type="number" name="" id="secondNumber" />
+    <button onclick="getRemains()">Находитель остатка</button>
+  </div>
+  <div>
+    <h2>Задание 4</h2>
+    <button id="minus67Btn" onclick="minus67()">Вычесть 67</button>
+    <var id="result"></var>
+    <button disabled id="minus28Btn" onclick="minus28()">Вычесть 28</button>
+  </div>
+  <div>
+    <h2>Задание 5</h2>
+    <input type="text" name="" id="argX" placeholder="значение x" />
+    <button onclick="mathFunc()">
+      Посчитать формулу<br />𝑦=𝑐𝑜𝑠(𝑥+4𝜋)∗𝑐𝑜𝑠(3𝑥−5𝜋/3)+(2sin⁡(4𝜋/7−5𝑥))∗(2x−3𝜋/4)
+    </button>
+  </div>
+  <div>
+    <h2>Задание 6</h2>
+    <input type="text" id="monthInput" placeholder="Введите номер месяца" />
+    <button onclick="getDaysInMonth()">
+      Определить количество <br />
+      дней в месяце
+    </button>
+  </div>
+  <div>
+    <h2>Задание 7</h2>
+    <input type="text" id="monthInputSwitch" placeholder="Введите номер месяца" />
+    <button onclick="getDaysInMonthSwitch()">Определить количество <br />
+      дней в месяце</button>
+  </div>
+  <div>
+    <h2>Задание 8</h2>
+    <table border="1">
+      <tr>
+        <td class="column1" onmouseover="changeBackgroundColor('red')" onmouseout="resetBackgroundColor()">
+          Колонка 1
+        </td>
+        <td class="column2" onmouseover="changeBackgroundColor('green')" onmouseout="resetBackgroundColor()">
+          Колонка 2
+        </td>
+        <td class="column3" onmouseover="changeBackgroundColor('blue')" onmouseout="resetBackgroundColor()">
+          Колонка 3
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+
+</html>
