@@ -1,150 +1,222 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Форма заказа кофе</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    .error { color: red; }
-    .success { color: green; }
-  </style>
-</head>
-<body onLoad="updateCoffeeOptions()" class="container mt-4">
-  <h2>Форма заказа кофе</h2>
-  
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab 6 order</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .error {
+        color: red;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+  </head>
+  <body onLoad="updateCoffeeOptions()" class="container mt-4">
+    <h2>Форма заказа кофе</h2>
+
     <div class="mb-4">
-      Тип кофе: <br>
-      <input class="form-check-input" type="radio" name="coffeeType" value="arabica" checked onchange="updateCoffeeOptions()"> 
+      Тип кофе: <br />
+      <input
+        class="form-check-input"
+        type="radio"
+        name="coffeeType"
+        value="arabica"
+        checked
+        onchange="updateCoffeeOptions()"
+      />
       <label class="form-check-label">Арабика</label>
-      <input class="form-check-input" type="radio" name="coffeeType" value="robusta" onchange="updateCoffeeOptions()"> 
+      <input
+        class="form-check-input"
+        type="radio"
+        name="coffeeType"
+        value="robusta"
+        onchange="updateCoffeeOptions()"
+      />
       <label class="form-check-label">Робуста</label>
     </div>
 
     <div class="mb-4">
-      Сорт кофе: </br>
-      <select id="coffeeVariety" class="form-select">
-      </select>
+      Сорт кофе: <br />
+      <select id="coffeeVariety" class="form-select"></select>
     </div>
 
     <div class="mb-4">
-      <input type="checkbox" id="giftWrap" class="form-check-input">
+      <input type="checkbox" id="giftWrap" class="form-check-input" />
       <span for="giftWrap" class="form-check-label">Подарочная упаковка</span>
     </div>
 
     <div class="mb-4">
       <label for="index" class="form-label">Индекс:</label>
-      <input type="text" id="index" class="form-control" onblur="validateIndex()">
+      <input
+        type="text"
+        id="index"
+        class="form-control"
+        onblur="validateIndex()"
+      />
       <span class="error" id="indexError"></span>
     </div>
 
     <div class="mb-4">
       <label for="deliveryDate" class="form-label">Дата доставки:</label>
-      <input type="text" id="deliveryDate" class="form-control" onblur="validateDate()">
+      <input
+        type="text"
+        id="deliveryDate"
+        class="form-control"
+        onblur="validateDate()"
+      />
       <span class="error" id="dateError"></span>
     </div>
 
     <div class="mb-4">
       <label for="name" class="form-label">Имя и фамилия:</label>
-      <input type="text" id="name" class="form-control" onblur="validateName()">
+      <input
+        type="text"
+        id="name"
+        class="form-control"
+        onblur="validateName()"
+      />
       <span class="error" id="nameError"></span>
     </div>
 
     <div class="mb-4">
       <label for="phone" class="form-label">Телефон:</label>
-      <input type="text" id="phone" class="form-control" onblur="validatePhone()">
+      <input
+        type="text"
+        id="phone"
+        class="form-control"
+        onblur="validatePhone()"
+      />
       <span class="error" id="phoneError"></span>
     </div>
 
     <div class="mb-4">
       <label for="email" class="form-label">Email:</label>
-      <input type="email" id="email" class="form-control" onblur="validateEmail()">
+      <input
+        type="email"
+        id="email"
+        class="form-control"
+        onblur="validateEmail()"
+      />
       <span class="error" id="emailError"></span>
     </div>
 
-    <button type="button" class="btn btn-primary" onclick="submitOrder()">Оформить заказ</button>
-  
+    <button type="button" class="btn btn-primary" onclick="submitOrder()">
+      Оформить заказ
+    </button>
 
-  <p id="orderSummary" class="mt-4"></p>
+    <p id="orderSummary" class="mt-4"></p>
 
-  <script>
-    const arabicaOptions = ['Бурбон', 'Типика', 'Марагоджип'];
-    const robustaOptions = ['Вьетнамская', 'Ангольская', 'Бразильская', 'Индонезийская'];
+    <script>
+      const arabicaOptions = ["Бурбон", "Типика", "Марагоджип"];
+      const robustaOptions = [
+        "Вьетнамская",
+        "Ангольская",
+        "Бразильская",
+        "Индонезийская",
+      ];
 
-    function updateCoffeeOptions() {
-      const coffeeType = document.querySelector('input[name="coffeeType"]:checked').value;
-      const varietySelect = document.getElementById('coffeeVariety');
-      varietySelect.innerHTML = '';
-      const options = coffeeType === 'arabica' ? arabicaOptions : robustaOptions;
-      options.forEach(option => {
-        const opt = document.createElement('option');
-        opt.value = option;
-        opt.textContent = option;
-        varietySelect.appendChild(opt);
-      });
-    }
-
-    function validateIndex() {
-      const index = document.getElementById('index').value;
-      const indexError = document.getElementById('indexError');
-      const valid = /^[4-5]\d{6}$/.test(index);
-      indexError.textContent = valid ? '' : 'Индекс должен быть числом длиной 7 символов, начинающимся на 4 или 5.';
-    }
-
-    function validateDate() {
-      const date = document.getElementById('deliveryDate').value;
-      const dateError = document.getElementById('dateError');
-      const valid = /^\d{2}-\d{2}-\d{2,4}$/.test(date);
-      dateError.textContent = valid ? '' : 'Формат даты: ДД-ММ-ГГГГ или ДД-ММ-ГГ.';
-    }
-
-    function validateName() {
-      const name = document.getElementById('name').value;
-      const nameError = document.getElementById('nameError');
-      const valid = /^[a-zA-Zа-яА-Я ]{5,35}$/.test(name);
-      nameError.textContent = valid ? '' : 'Длина имени и фамилии должна быть от 5 до 35 символов.';
-      alert(valid);
-    }
-
-    function validatePhone() {
-      let phone = document.getElementById('phone').value.replace(/-/g, '');
-      const phoneError = document.getElementById('phoneError');
-      const valid = /^\d{6,7}$/.test(phone);
-      if (valid) {
-        phone = phone.length === 6 ? `${phone.slice(0, 2)}-${phone.slice(2, 4)}-${phone.slice(4)}` :
-                `${phone.slice(0, 2)}-${phone.slice(2, 4)}-${phone.slice(4)}`;
+      function updateCoffeeOptions() {
+        const coffeeType = document.querySelector(
+          'input[name="coffeeType"]:checked'
+        ).value;
+        const varietySelect = document.getElementById("coffeeVariety");
+        varietySelect.innerHTML = "";
+        const options =
+          coffeeType === "arabica" ? arabicaOptions : robustaOptions;
+        options.forEach((option) => {
+          const opt = document.createElement("option");
+          opt.value = option;
+          opt.textContent = option;
+          varietySelect.appendChild(opt);
+        });
       }
-      phoneError.textContent = valid ? '' : 'Телефон должен быть числом длиной 6 или 7 цифр.';
-      document.getElementById('phone').value = phone;
-    }
 
-    function validateEmail() {
-      const email = document.getElementById('email').value;
-      const emailError = document.getElementById('emailError');
-      const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-      emailError.textContent = valid ? '' : 'Некорректный email.';
-    }
-
-    function submitOrder() {
-      validateIndex();
-      validateDate();
-      validateName();
-      validatePhone();
-      validateEmail();
-
-      const errors = document.querySelectorAll('.error');
-      let hasErrors = false;
-      errors.forEach(error => { if (error.textContent) hasErrors = true; });
-
-      if (!hasErrors) {
-        const coffeeType = document.querySelector('input[name="coffeeType"]:checked').value;
-        const coffeeVariety = document.getElementById('coffeeVariety').value;
-        const giftWrap = document.getElementById('giftWrap').checked ? 'с подарочной упаковкой' : 'без подарочной упаковки';
-        document.getElementById('orderSummary').innerHTML = `<b>Ваш заказ:</b> ${coffeeType} (${coffeeVariety}), ${giftWrap}.`;
-      } else {
-        document.getElementById('orderSummary').innerHTML = '<span class="error">Пожалуйста, исправьте ошибки в форме.</span>';
+      function validateIndex() {
+        const index = document.getElementById("index").value;
+        const indexError = document.getElementById("indexError");
+        const valid = /^[4-5]\d{6}$/.test(index);
+        indexError.textContent = valid
+          ? ""
+          : "Индекс должен быть числом длиной 7 символов, начинающимся на 4 или 5.";
       }
-    }
-  </script>
-</body>
+
+      function validateDate() {
+        const date = document.getElementById("deliveryDate").value;
+        const dateError = document.getElementById("dateError");
+        const valid = /^\d{2}-\d{2}-\d{2,4}$/.test(date);
+        dateError.textContent = valid
+          ? ""
+          : "Формат даты: ДД-ММ-ГГГГ или ДД-ММ-ГГ.";
+      }
+
+      function validateName() {
+        const name = document.getElementById("name").value;
+        const nameError = document.getElementById("nameError");
+        const valid = /^[a-zA-Zа-яА-Я ]{5,35}$/.test(name);
+        nameError.textContent = valid
+          ? ""
+          : "Длина имени и фамилии должна быть от 5 до 35 символов.";
+        alert(valid);
+      }
+
+      function validatePhone() {
+        let phone = document.getElementById("phone").value.replace(/-/g, "");
+        const phoneError = document.getElementById("phoneError");
+        const valid = /^\d{6,7}$/.test(phone);
+        if (valid) {
+          phone =
+            phone.length === 6
+              ? `${phone.slice(0, 2)}-${phone.slice(2, 4)}-${phone.slice(4)}`
+              : `${phone.slice(0, 2)}-${phone.slice(2, 4)}-${phone.slice(4)}`;
+        }
+        phoneError.textContent = valid
+          ? ""
+          : "Телефон должен быть числом длиной 6 или 7 цифр.";
+        document.getElementById("phone").value = phone;
+      }
+
+      function validateEmail() {
+        const email = document.getElementById("email").value;
+        const emailError = document.getElementById("emailError");
+        const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        emailError.textContent = valid ? "" : "Некорректный email.";
+      }
+
+      function submitOrder() {
+        validateIndex();
+        validateDate();
+        validateName();
+        validatePhone();
+        validateEmail();
+
+        const errors = document.querySelectorAll(".error");
+        let hasErrors = false;
+        errors.forEach((error) => {
+          if (error.textContent) hasErrors = true;
+        });
+
+        if (!hasErrors) {
+          const coffeeType = document.querySelector(
+            'input[name="coffeeType"]:checked'
+          ).value;
+          const coffeeVariety = document.getElementById("coffeeVariety").value;
+          const giftWrap = document.getElementById("giftWrap").checked
+            ? "с подарочной упаковкой"
+            : "без подарочной упаковки";
+          document.getElementById(
+            "orderSummary"
+          ).innerHTML = `<b>Ваш заказ:</b> ${coffeeType} (${coffeeVariety}), ${giftWrap}.`;
+        } else {
+          document.getElementById("orderSummary").innerHTML =
+            '<span class="error">Пожалуйста, исправьте ошибки в форме.</span>';
+        }
+      }
+    </script>
+  </body>
 </html>
