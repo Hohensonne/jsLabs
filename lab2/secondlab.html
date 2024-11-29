@@ -39,7 +39,7 @@
     }
 
     function getCurrentDate() {
-      var currentDate = new Date().toLocaleDateString("ru-RU").replace(".", ":");;
+      var currentDate = new Date().toLocaleDateString("ru-RU").replace(/\./g, ":");
       document.getElementById("currentDate").innerHTML = currentDate;
     }
 
