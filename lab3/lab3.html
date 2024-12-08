@@ -114,6 +114,15 @@
         margin-top: 20px;
         color: #555;
       }
+
+      input {
+        padding: 8px 15px;
+        width: 190px;
+        font-size: 1em;
+        transition: background-color 0.3s;
+        border-radius: 5px;
+      }
+
     </style>
   </head>
 
@@ -129,6 +138,7 @@
         <li onclick="move(this)">Соки</li>
         <li onclick="move(this)">Воды</li>
       </ol>
+      <input type="text" id="newItem" placeholder="Введите название элемента" />
       <button onclick="addItem()">Добавить элемент</button>
       <button onclick="removeItem()">Удалить элемент</button>
     </div>
@@ -170,7 +180,7 @@
         </tbody>
       </table>
 
-      <button id="resizeButton" onclick="resizeButton()">
+      <button id="resizeButton" onmouseover="expandButton()" onclick="resizeButton()">
         Уменьшить ширину кнопки
       </button>
 
@@ -245,12 +255,25 @@
       }
 
       function addItem() {
+        let item = document.getElementById("newItem");
+        const list = document.getElementById("itemList");
+        item = item.value.trim();
+
+        if (item.length == 0) {
+          alert("нельзя добавлять пустую строку");
+          return;
+        }
+        else if (Array.from(list.children).map((li) => li.textContent).includes(item)){
+          alert("Такой элемент в списке уже есть, измените название");
+          return;
+        }
+
         var li = document.createElement("li");
-        li.textContent = "Новый элемент";
+        li.textContent = item;
         li.onclick = function () {
           move(this);
         };
-        document.getElementById("itemList").appendChild(li);
+        list.appendChild(li)
       }
 
       function removeItem() {
@@ -268,6 +291,18 @@
         } else {
           button.disabled = true;
           alert("Всё! Пикселей больше нет, но вы держитесь!");
+        }
+      }
+
+      function expandButton() {
+        var button = document.getElementById("resizeButton");
+        var width = button.offsetWidth;
+        if (width < 500) {
+          button.style.width = width + 60 + "px";
+        } else {
+          button.style.width = 500 + "px";
+          button.disabled = true;
+          alert("Расширяющий мир победил!");
         }
       }
 

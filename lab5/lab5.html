@@ -93,6 +93,13 @@
         <p id="birthdayInfo">
           Мой следующий день рождения 00.00.0000, до него осталось 00 дней
         </p>
+        <div class="input-group">
+          <label for="selectedDate" class="form-control">Сколько от даты до дня рождения:</label>
+          <input type="date" id="selectedDate" class="form-control" />
+          <button class="btn btn-primary" onclick="calculateDaysToBirthday()">
+            Посчитать дни
+          </button>
+        </div>
       </div>
       <div id="Section-4" class="section mb-4">
         Раздел 4
@@ -192,6 +199,16 @@
       function updateBirthday() {
         let today = new Date();
         let birthday = new Date(today.getFullYear(), 2, 7);
+
+        if (
+          today.getDate() === birthday.getDate() &&
+          today.getMonth() === birthday.getMonth()
+        ) {
+          document.getElementById("birthdayInfo").innerHTML =
+            "У меня сегодня день рождения ахаха охохо ухуху лол!";
+          return;
+        }
+
         if (today > birthday) birthday.setFullYear(today.getFullYear() + 1);
 
         let daysLeft = Math.ceil((birthday - today) / (1000 * 60 * 60 * 24));
@@ -203,6 +220,28 @@
           2,
           "0"
         )}.${birthday.getFullYear()}, до него осталось ${daysLeft} дней`;
+      }
+
+      function calculateDaysToBirthday() {
+        let DateInput = document.getElementById("selectedDate").value;
+        if (!DateInput) {
+          alert("Введите корректную дату!");
+          updateBirthday();
+          return;
+        }
+        let date = new Date(DateInput);
+        let birthday = new Date(date.getFullYear(), 2, 7);
+
+        if (date > birthday) {
+          birthday.setFullYear(date.getFullYear() + 1);
+        }
+
+        let daysLeft = Math.ceil(
+          (birthday - date) / (1000 * 60 * 60 * 24)
+        );
+        document.getElementById(
+          "birthdayInfo"
+        ).innerHTML = `От даты до дня рождения: ${daysLeft} дней`;
       }
 
       let array = [];

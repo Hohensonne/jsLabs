@@ -17,12 +17,21 @@
       .error {
         color: red;
       }
+
+      .globalError {
+        color: red;
+        font-size: 1.5rem;
+      }
+
       .success {
         color: green;
       }
     </style>
   </head>
-  <body onLoad="updateCoffeeOptions()" class="container mt-4">
+  <body
+    onload="updateCoffeeOptions()"
+    class="container mt-4"
+  >
     <h2>Форма заказа кофе</h2>
 
     <div class="mb-4">
@@ -47,13 +56,34 @@
     </div>
 
     <div class="mb-4">
-      Сорт кофе: <br />
-      <select id="coffeeVariety" class="form-select"></select>
+      Сорт кофе и цена за 1 кг: <br />
+      <select
+        id="coffeeVariety"
+        class="form-select"
+      ></select>
     </div>
 
     <div class="mb-4">
-      <input type="checkbox" id="giftWrap" class="form-check-input" />
-      <span for="giftWrap" class="form-check-label">Подарочная упаковка</span>
+      <label for="quantity" class="form-label">Количество (кг):</label>
+      <select id="quantity" class="form-select">
+        <option value="1">1 кг</option>
+        <option value="2">2 кг</option>
+        <option value="3">3 кг</option>
+        <option value="4">4 кг</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <input
+        type="checkbox"
+        id="giftWrap"
+        class="form-check-input"
+      />
+      <label
+        for="giftWrap"
+        class="form-check-label"
+        >Подарочная упаковка</label
+      >
     </div>
 
     <div class="mb-4">
@@ -118,13 +148,19 @@
     <p id="orderSummary" class="mt-4"></p>
 
     <script>
-      const arabicaOptions = ["Бурбон", "Типика", "Марагоджип"];
-      const robustaOptions = [
-        "Вьетнамская",
-        "Ангольская",
-        "Бразильская",
-        "Индонезийская",
-      ];
+      const coffeePrices = {
+        arabica: {
+          Бурбон: 1200,
+          Типика: 1100,
+          Марагоджип: 1300,
+        },
+        robusta: {
+          Вьетнамская: 900,
+          Ангольская: 850,
+          Бразильская: 950,
+          Индонезийская: 1000,
+        },
+      };
 
       function updateCoffeeOptions() {
         const coffeeType = document.querySelector(
@@ -132,14 +168,15 @@
         ).value;
         const varietySelect = document.getElementById("coffeeVariety");
         varietySelect.innerHTML = "";
-        const options =
-          coffeeType === "arabica" ? arabicaOptions : robustaOptions;
-        options.forEach((option) => {
+        const options = coffeePrices[coffeeType];
+        for (const variety in options) {
+          const price = options[variety];
           const opt = document.createElement("option");
-          opt.value = option;
-          opt.textContent = option;
+          opt.value = variety;
+          opt.textContent = `${variety} - ${price} руб./кг`;
+          opt.setAttribute("data-price", price);
           varietySelect.appendChild(opt);
-        });
+        }
       }
 
       function validateIndex() {
@@ -155,24 +192,56 @@
         const date = document.getElementById("deliveryDate").value;
         const dateError = document.getElementById("dateError");
         const valid = /^\d{2}-\d{2}-\d{2,4}$/.test(date);
-        dateError.textContent = valid
-          ? ""
-          : "Формат даты: ДД-ММ-ГГГГ или ДД-ММ-ГГ.";
+        if (valid) {
+          dateError.textContent = "";
+        } else {
+          dateError.textContent = "Формат даты: ДД-ММ-ГГГГ или ДД-ММ-ГГ.";
+          return;
+        }
+
+        const [_, day, month, year] = date
+          .match(/^(\d{2})-(\d{2})-(\d{2,4})$/)
+          .map(Number);
+
+        if (year < 2020 || month < 1 || month > 12 || day < 1 || day > 31) {
+          dateError.textContent = "Введите корректную дату.";
+          return;
+        }
+
+        const testDate = new Date(`${year}-${month}-${day}`);
+        if (
+          testDate.getFullYear() !== year ||
+          testDate.getMonth() + 1 !== month ||
+          testDate.getDate() !== day
+        ) {
+          dateError.textContent = "Несуществующая дата.";
+          return;
+        }
       }
 
       function validateName() {
-        const name = document.getElementById("name").value;
+        const error = "Длина имени и фамилии должна быть от 5 до 35 символов.";
         const nameError = document.getElementById("nameError");
-        const valid = /^[a-zA-Zа-яА-Я ]{5,35}$/.test(name);
-        nameError.textContent = valid
-          ? ""
-          : "Длина имени и фамилии должна быть от 5 до 35 символов.";
-        alert(valid);
+        const name = document.getElementById("name").value;
+        if (name.length < 5 || name.length > 35) {
+          nameError.textContent = error;
+          return;
+        }
+
+        const valid = /^[a-zA-Zа-яА-Я]{1,34} [a-zA-Zа-яА-Я]{1,34}$/.test(name);
+        nameError.textContent = valid ? "" : error;
       }
 
       function validatePhone() {
         let phone = document.getElementById("phone").value.replace(/-/g, "");
         const phoneError = document.getElementById("phoneError");
+        if (phone.length < 6 || phone.length > 11) {
+          phoneError.textContent =
+            "Телефон должен быть числом длиной от 6 до 11 цифр.";
+        } else {
+          phoneError.textContent = "";
+        }
+
         const valid = /^\d{6,7}$/.test(phone);
         if (valid) {
           phone =
@@ -180,9 +249,7 @@
               ? `${phone.slice(0, 2)}-${phone.slice(2, 4)}-${phone.slice(4)}`
               : `${phone.slice(0, 2)}-${phone.slice(2, 4)}-${phone.slice(4)}`;
         }
-        phoneError.textContent = valid
-          ? ""
-          : "Телефон должен быть числом длиной 6 или 7 цифр.";
+
         document.getElementById("phone").value = phone;
       }
 
@@ -194,32 +261,46 @@
       }
 
       function submitOrder() {
-        validateIndex();
-        validateDate();
-        validateName();
-        validatePhone();
         validateEmail();
-
+        validatePhone();
+        validateName();
+        validateDate();
+        validateIndex();
         const errors = document.querySelectorAll(".error");
         let hasErrors = false;
+
         errors.forEach((error) => {
           if (error.textContent) hasErrors = true;
         });
-
         if (!hasErrors) {
           const coffeeType = document.querySelector(
             'input[name="coffeeType"]:checked'
           ).value;
-          const coffeeVariety = document.getElementById("coffeeVariety").value;
-          const giftWrap = document.getElementById("giftWrap").checked
-            ? "с подарочной упаковкой"
-            : "без подарочной упаковки";
+          const varietyElement = document.getElementById("coffeeVariety");
+          const variety = varietyElement.value;
+          const pricePerKg =
+            varietyElement.options[varietyElement.selectedIndex].getAttribute(
+              "data-price"
+            );
+
+          const quantity = document.getElementById("quantity").value;
+          const giftWrap = document.getElementById("giftWrap").checked;
+
+          if (!quantity) {
+            alert("Выберите количество килограммов.");
+            return;
+          }
+
+          const totalCost = giftWrap ? pricePerKg * quantity + 250 : pricePerKg * quantity;
+
           document.getElementById(
             "orderSummary"
-          ).innerHTML = `<b>Ваш заказ:</b> ${coffeeType} (${coffeeVariety}), ${giftWrap}.`;
+          ).innerHTML = `<b>Ваш заказ:</b> ${coffeeType} (${variety}), ${quantity} кг, ${
+            giftWrap ? "с подарочной упаковкой" : "без подарочной упаковки"
+          }. <br> <b>Общая стоимость:</b> ${totalCost} руб.`;
         } else {
           document.getElementById("orderSummary").innerHTML =
-            '<span class="error">Пожалуйста, исправьте ошибки в форме.</span>';
+            '<span class = "globalError">Пожалуйста, исправьте ошибки в форме.</span>';
         }
       }
     </script>
