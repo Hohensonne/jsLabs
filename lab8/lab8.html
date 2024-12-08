@@ -1,168 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Планирование отпусков</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-  <div class="container mt-5">
-    <h1 class="text-center">Планирование отпусков</h1>
-    <div class="card p-4">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Планирование отпусков</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Планирование отпусков</h1>
+
+      <!-- Дата трудоустройства -->
       <div class="mb-3">
-        <label for="employmentDate" class="form-label">Дата трудоустройства:</label>
-        <input type="date" id="employmentDate" class="form-control" min="2024-01-01">
+        <label for="employmentDate" class="form-label"
+          >Дата трудоустройства</label
+        >
+        <input
+          type="date"
+          class="form-control"
+          id="employmentDate"
+          min="2024-01-01"
+        />
       </div>
-      <div class="d-flex justify-content-between">
-        <button id="startPlanning" class="btn btn-primary">Начать расчет отпусков</button>
-        <button id="clearPeriods" class="btn btn-danger" disabled>Очистить текущие периоды</button>
+      <button class="btn btn-primary" id="startPlanning">
+        Начать расчет отпусков
+      </button>
+
+      <!-- Баланс и расчет -->
+      <div class="mt-4" id="calculationSection" style="display: none">
+        <p>
+          <strong>Баланс дней 
+            сотрудника на 31.12 следующего года:</strong> <span id="totalBalance">0</span> дней
+        </p>
+        <p>
+          <strong>Всего запланировано дней:</strong>
+          <span id="totalPlanned">0</span> дней
+        </p>
+        <p>
+          <strong>Осталось запланировать:</strong>
+          <span id="remainingDays">28</span> дней
+        </p>
+
+        <!-- Ввод периода -->
+        <div class="mb-3">
+          <label for="startDate" class="form-label">Дата с</label>
+          <input type="date" class="form-control" id="startDate" />
+        </div>
+        <div class="mb-3">
+          <label for="endDate" class="form-label">Дата по</label>
+          <input type="date" class="form-control" id="endDate" />
+        </div>
+        <p>
+          <strong>Длительность в днях:</strong> <span id="duration">0</span>
+        </p>
+        <button class="btn btn-success" id="addPeriod">Добавить период</button>
+        <div class="text-danger mt-2" id="errorMessages"></div>
+
+        <!-- Таблица периодов -->
+        <h3 class="mt-4">Запланированные отпуска</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Дата с</th>
+              <th>Дата по</th>
+              <th>Длительность (дни)</th>
+            </tr>
+          </thead>
+          <tbody id="vacationTable"></tbody>
+        </table>
+
+        <!-- Управление -->
+        <button class="btn btn-danger" id="clearPeriods">
+          Очистить текущие периоды
+        </button>
+        <button class="btn btn-primary" id="finishPlanning">
+          Закончить планирование
+        </button>
       </div>
     </div>
-    
-    <div id="planningSection" class="card mt-4 p-4 d-none">
-      <h2>Планирование отпусков</h2>
-      <div class="row">
-        <div class="col-md-4">
-          <label for="startDate" class="form-label">Дата с:</label>
-          <input type="date" id="startDate" class="form-control" min="2025-01-01" max="2025-12-31">
-        </div>
-        <div class="col-md-4">
-          <label for="endDate" class="form-label">Дата по:</label>
-          <input type="date" id="endDate" class="form-control" min="2025-01-01" max="2025-12-31">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Длительность в днях:</label>
-          <input type="text" id="duration" class="form-control" readonly>
-        </div>
-      </div>
-      <button id="addPeriod" class="btn btn-success mt-3" disabled>Добавить период</button>
-      <div id="errors" class="text-danger mt-2"></div>
-      <div id="periodsList" class="mt-4">
-        <h3>Запланированные отпуска</h3>
-        <ul class="list-group" id="periods"></ul>
-        <div class="mt-3">
-          <p>Всего запланировано дней: <span id="totalDays">0</span></p>
-          <p>Осталось запланировать: <span id="remainingDays">28</span></p>
-        </div>
-      </div>
-      <button id="finishPlanning" class="btn btn-primary mt-3" disabled>Закончить планирование</button>
-    </div>
-  </div>
 
-  <script>
-    const employmentDateInput = document.getElementById('employmentDate');
-    const startPlanningButton = document.getElementById('startPlanning');
-    const clearPeriodsButton = document.getElementById('clearPeriods');
-    const planningSection = document.getElementById('planningSection');
-    const startDateInput = document.getElementById('startDate');
-    const endDateInput = document.getElementById('endDate');
-    const durationInput = document.getElementById('duration');
-    const addPeriodButton = document.getElementById('addPeriod');
-    const errorsDiv = document.getElementById('errors');
-    const periodsList = document.getElementById('periods');
-    const totalDaysSpan = document.getElementById('totalDays');
-    const remainingDaysSpan = document.getElementById('remainingDays');
-    const finishPlanningButton = document.getElementById('finishPlanning');
-
-    let periods = [];
-    let totalDays = 0;
-    const maxDays = 28;
-
-    startPlanningButton.addEventListener('click', () => {
-      const employmentDate = new Date(employmentDateInput.value);
-      if (!employmentDate || employmentDate > new Date() || employmentDate < new Date('2024-01-01')) {
-        alert('Укажите корректную дату трудоустройства.');
-        return;
-      }
-      employmentDateInput.disabled = true;
-      startPlanningButton.disabled = true;
-      planningSection.classList.remove('d-none');
-      clearPeriodsButton.disabled = false;
-    });
-
-    [startDateInput, endDateInput].forEach(input => {
-      input.addEventListener('change', () => {
-        const start = new Date(startDateInput.value);
-        const end = new Date(endDateInput.value);
-        if (start && end && start <= end) {
-          durationInput.value = (end - start) / (1000 * 60 * 60 * 24) + 1;
-        } else {
-          durationInput.value = '';
-        }
-      });
-    });
-
-    addPeriodButton.addEventListener('click', () => {
-      errorsDiv.innerHTML = '';
-      const start = new Date(startDateInput.value);
-      const end = new Date(endDateInput.value);
-      const duration = parseInt(durationInput.value);
-      
-      const errors = [];
-
-      if (!start || !end || start > end) {
-        errors.push('Дата окончания отпуска не может быть раньше даты начала.');
-      }
-
-      const overlap = periods.some(period => 
-        (start <= period.end && end >= period.start));
-      if (overlap) {
-        errors.push('Период пересекается с уже запланированным отпуском.');
-      }
-
-      const employmentDate = new Date(employmentDateInput.value);
-      const daysWorked = (end - employmentDate) / (1000 * 60 * 60 * 24);
-      const accruedDays = (28 / 365) * daysWorked;
-      const remainingBalance = accruedDays - totalDays - duration;
-      if (remainingBalance < -5) {
-        errors.push(`Не хватает баланса дней для взятия этого периода. Остаток: ${remainingBalance.toFixed(2)}`);
-      }
-
-      if (errors.length > 0) {
-        errorsDiv.innerHTML = errors.join('<br>');
-        return;
-      }
-
-      periods.push({ start, end, duration });
-      totalDays += duration;
-      updateUI();
-    });
-
-    function updateUI() {
-      periodsList.innerHTML = '';
-      periods.forEach(period => {
-        const item = document.createElement('li');
-        item.className = 'list-group-item';
-        item.textContent = `${period.start.toLocaleDateString()} - ${period.end.toLocaleDateString()} (${period.duration} дней)`;
-        periodsList.appendChild(item);
-      });
-
-      totalDaysSpan.textContent = totalDays;
-      remainingDaysSpan.textContent = Math.max(0, maxDays - totalDays);
-      finishPlanningButton.disabled = totalDays < maxDays;
-    }
-
-    clearPeriodsButton.addEventListener('click', () => {
-      periods = [];
-      totalDays = 0;
-      employmentDateInput.disabled = false;
-      startPlanningButton.disabled = false;
-      planningSection.classList.add('d-none');
-      clearPeriodsButton.disabled = true;
-      updateUI();
-    });
-
-    finishPlanningButton.addEventListener('click', () => {
-      if (totalDays >= maxDays) {
-        alert('Поздравляем! Вы успешно запланировали свои отпуска на следующий год!');
-        addPeriodButton.disabled = true;
-        startDateInput.disabled = true;
-        endDateInput.disabled = true;
-      } else {
-        alert('Нужно запланировать минимально 28 дней отпусков на следующий год.');
-      }
-    });
-  </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>
