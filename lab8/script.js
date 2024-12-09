@@ -1,12 +1,3 @@
-/**
- * 
- * затестить правильно ли работают оставшиеся дни:
- *  сделать инпут дата для теста
- * 
- */
-
-
-
 let periods = [];
 const MAX_BALANCE = 28;
 const MAX_NEGATIVE_BALANCE = -5;
@@ -14,11 +5,22 @@ const MAX_NEGATIVE_BALANCE = -5;
 
 $(document).ready(() => {
 
+    $("#testBalanceShow").click(function(){
+        if ($(this).is(":checked")){
+            $("#testBalance").show();
+        } else {
+            $("#testBalance").hide();
+        }
+    });
+    
     $("#employmentDate").attr("max", new Date().toISOString().slice(0, 10));
+
+   
 
     if (localStorage.startPlanning){
         $("#employmentDate").val(localStorage.startPlanning);
     }
+
 
     $("#employmentDate").on("change", function () {
         localStorage.startPlanning = $(this).val();
@@ -30,7 +32,7 @@ $(document).ready(() => {
         $("#startPlanning").prop("disabled", true);
         $("#calculationSection").show();
         
-        calculateBalance(employmentDate);
+        calculateBalance( $("#employmentDate").val());
         updatePeriodsTable();
     }
 
@@ -79,7 +81,6 @@ $(document).ready(() => {
         }
 
         // Сохранение периода
-        
         periods.push({ startDate, endDate, duration });
         localStorage.periods = JSON.stringify(periods);
         updatePeriodsTable();
@@ -108,6 +109,9 @@ $(document).ready(() => {
     });
 });
 
+function calculateAvailableBalanceTest(){
+    alert(calculateAvailableBalance($("#testBalanceInput").val()));
+}
 
 function calculateBalance(employmentDate) {
     const start = new Date(employmentDate);
