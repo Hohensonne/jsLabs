@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <title>Story</title>
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #1e1e2f;
+        color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+        width: 100%;
+      }
+
+      .location-image {
+        margin: 50px;
+        align-self: start;
+        position: relative;
+        max-width: 50%;
+        max-height: 60%;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 0 30px 10px rgba(255, 255, 255, 0.3);
+      }
+
+      .location-image img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 15px;
+        overflow: hidden;
+      }
+
+      .choices {
+        flex-direction: column;
+        display: flex;
+        justify-content: space-around;
+        width: 50%;
+      }
+
+      .choice-button {
+        margin: 5px;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        background-color: #e3e5771f;
+      }
+
+      .choice-button:hover {
+        background-color: #e3e5774c;
+      }
+
+      .choice-button:active {
+        transform: scale(0.95);
+      }
+
+      .scene-description {
+        text-align: center;
+        position: absolute;
+        width: 100%;
+        bottom: 150px;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+      }
+
+      #history {
+        width: 10%;
+        margin: 20px;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow-y: auto;
+        max-height: 20vh;
+      }
+
+      #history-list {
+        list-style: none;
+        padding: 0;
+      }
+    </style>
+  </head>
+
+  <body onload="changeScene(0)">
+    <div class="container">
+      <div class="location-image">
+        <img id="image" " alt="Текущая локация" />
+      </div>
+
+      <div class="choices">
+        <button
+          id="choice1"
+          class="choice-button"
+          onclick="changeScene(1)"
+          style="display: none"
+        >
+          Выбор 1
+        </button>
+        <button
+          id="choice2"
+          class="choice-button"
+          onclick="changeScene(2)"
+          style="display: none"
+        >
+          Выбор 2
+        </button>
+        <button
+          id="choice3"
+          class="choice-button"
+          onclick="changeScene(3)"
+          style="display: none"
+        >
+          Выбор 3
+        </button>
+      </div>
+
+      <div id="description" class="scene-description">
+        Что-то важное происходит в этой локации...
+      </div>
+      <div id="history">
+        <h3>История</h3>
+        <ul id="history-list"></ul>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var curScene = 0;
+    var dagger = 0;
+    var runAway = 0;
+    var key = 0;
+    var skeletKilled = 0;
+
+    var img = document.getElementById("image");
+
+    var description = document.getElementById("description");
+
+    var choice1Scene, choice2Scene, choice3Scene;
+    var choice1Text, choice2Text, choice3Text;
+
+    var choice1 = document.getElementById("choice1"),
+      choice2 = document.getElementById("choice2"),
+      choice3 = document.getElementById("choice3");
+
+    var historyList = document.getElementById("history-list");
+
+   
+    function changeScene(decision) {
+      choice1.style = "display: none";
+      choice2.style = "display: none";
+      choice3.style = "display: none";
+
+      let prevDescription = description.innerText;
+      let decisionText = "";
+
+      switch (decision) {
+        case 1:
+          curScene = choice1Scene;
+          decisionText = choice1.innerText;
+          break;
+        case 2:
+          curScene = choice2Scene;
+          decisionText = choice2.innerText;
+          break;
+        case 3:
+          curScene = choice3Scene;
+          decisionText = choice3.innerText;
+          break;
+      }
+
+
+
+      switch (curScene) {
+        case 0:
+          img.src = "scene0.png";
+          description.innerText =
+            "Вы просыпаетесь в сыром и мрачном подземелье. Вокруг вас каменные стены, покрытые плесенью, а воздух наполнен затхлым запахом сырости. На полу перед вами лежит скелет, одетый в остатки кожаной брони. Рядом с ним валяется ржавый кинжал.";
+          choice1Scene = 2;
+          choice2Scene = 1;
+          choice1.innerText = "Осмотреть скелет и взять кинжал.";
+          choice2.innerText = "Оставить кинжал и осмотреть помещение.";
+          choice1.style = "display: block";
+          choice2.style = "display: block";
+          break;
+
+        case 1:
+          img.src = "scene1.png";
+          description.innerText =
+            "Осмотрев комнату вы обнаруживаете что из нее есть лишь один выход.";
+          choice1Scene = 2;
+          choice2Scene = 3;
+          switch (dagger) {
+            case 0:
+              choice1.innerText = "Вернуться и осмотреть скелета.";
+              choice2.innerText = "Пройти в коридор.";
+              choice1.style = "display: block";
+              choice2.style = "display: block";
+              break;
+            case 1:
+              choice2.innerText = "Пройти в коридор.";
+              choice2.style = "display: block";
+              break;
+          }
+
+          break;
+
+        case 2:
+          img.src = "scene2.png";
+          description.innerText =
+            "Подходя к скелету, вы замечаете, что его кости покрыты трещинами, словно он был раздавлен огромной силой. Рядом с ним лежит сумка. В ней несколько монет и потемневший амулет. Кинжал выглядит довольно прочным, несмотря на следы ржавчины.";
+          choice1Scene = 1;
+          choice1.innerText = "Взять кинжал и осмотреть помещение.";
+          choice1.style = "display = block";
+          dagger = 1;
+          break;
+        case 3:
+          img.src = "scene3.png";
+          description.innerText =
+            "Продвигаясь по коридору, ваше внимание привлекает слегка приоткрытая деревянная дверь. Она выглядит древней и изношенной. Сквозь щель виднеется небольшое помещение.";
+          switch (skeletKilled || runAway) {
+            case 0:
+              choice1Scene = 4;
+              choice1.innerText = "Заглянуть в помещение.";
+              choice1.style = "display = block";
+              break;
+          }
+
+          choice2Scene = 9;
+          choice2.innerText = "Аккуратно пройти дальше.";
+          choice2.style = "display = block";
+          choice3Scene = 1;
+          choice3.innerText = "Вернуться в начальную комнату.";
+          choice3.style = "display = block";
+          break;
+        case 4:
+          switch (dagger) {
+            case 0:
+              img.src = "death.jpg";
+              description.innerText =
+                "Заглянув в помещения вы обнаруживаете сидящего на полу скелета, а на столе в углу неподалеку лежит ключ. Снова взглянув на скелета вы обнаруживаете, что он на всей скорости несется к вам. Скелет размашистым ударом наносит вам глубокое раненее в шею. Ваше сознаниее тускнеет.";
+
+              return;
+          }
+
+          img.src = "scene4.png";
+          key = 1;
+
+          description.innerText =
+            "Заглянув в помещения вы обнаруживаете сидящего на полу скелета, а на столе в углу неподалеку лежит ключ. Враг не кажется вам сильным. Вы бросаетесь вперёд, пытаясь нанести удар кинжалом. Однако существо ловко уворачивается и контратакует своим мечем. Скелет оказался слишком быстрым и вы не смогли увернуть полностью. Скелет попадает вам по ноге.";
+          choice1Scene = 6;
+          choice1.innerText = "Продолжить битву.";
+          choice1.style = "display = block";
+          choice2Scene = 5;
+          choice2.innerText = "Схватить ключ и сбежать.";
+          choice2.style = "display = block";
+          break;
+        case 5:
+          img.src = "scene3.png";
+          description.innerText =
+            "Забрав ключ вы мигом выбежали за дверь и с размаху закрыли ее. Рядом стоят пустые бочки. Вы подпираете ими дверь. Оборвав рукав своей рубахи вы накладываете повязку на ногу. Кровь стала вытекать медленнее.";
+          choice1Scene = 3;
+          choice1.innerText = "Далее.";
+          choice1.style = "display = block";
+          runAway = 1;
+          break;
+
+        case 6:
+          img.src = "scene6.png";
+          description.innerText =
+            "После того, как скелет попал вам по ноге, вы почувствовали острую боль, но не сдаётесь. Несмотря на кровотечение, вы продолжаете сражаться, понимая, что другого выхода нет. Используя свою последнюю энергию, вы совершаете неожиданный маневр, ныряя под меч скелета и нанося мощный удар кинжалом в его грудную клетку. Кость трескается, и скелет рассыпается на куски, превращаясь в груду костей на полу. Кровотечение усилилось, и вы понимаете, что нужно срочно обработать рану. Оглядевшись вокруг, вы замечаете на столе рядом с ключом какие-то баночки и флаконы. Возможно, среди них найдется что-то полезное для заживления раны.";
+          choice1Scene = 7;
+          choice1.innerText = "Осмотреть помещение.";
+          choice1.style = "display = block";
+          choice2Scene = 8;
+          choice2.innerText = "Попытаться самим остановить кровь.";
+          choice2.style = "display = block";
+          break;
+
+        case 7:
+          img.src = "scene7.png";
+          description.innerText =
+            "Осмотрев помещение вы обнаруживаете небольшое зелье лечения. Открыв пузырёк, вы быстро выпили содержимое, надеясь, что оно сработает. Жидкость была горькая и жгучая, но почти сразу же вы почувствовали, как тепло распространяется по телу, проникая в каждую клеточку. Рана на вашей ноге начала затягиваться, и вскоре кровотечение остановилось. Сила вернулась к вам, и вы ощутили новый прилив энергии.";
+          choice1Scene = 3;
+          choice1.innerText = "Выйти из комнаты";
+          choice1.style = "display = block";
+          skeletKilled = 1;
+          break;
+
+        case 8:
+          img.src = "death.jpg";
+          description.innerText =
+            "Вы берёте кусок ткани, который висит на крючке возле стола, и пытаетесь наложить повязку на ногу. Ваши пальцы уже плохо слушаются, и вы с трудом завязываете узел. Тем временем кровь продолжает сочиться сквозь ткань, и вы понимаете, что ваша жизнь уходит вместе с каждым потерянным каплей. Силы покидают вас, и вы медленно опускаетесь на холодный каменный пол. В голове мелькает мысль о том, что нужно добраться до выхода, но тело больше не подчиняется вашим командам. Последнее, что вы видите, прежде чем потерять сознание, — это ключ, лежащий на столе. Ваша рука безвольно падает, и мир погружается во тьму.";
+          break;
+
+        case 9:
+          img.src = "scene9.png";
+          description.innerText =
+            "Перед героем возвышается массивная деревянная дверь, украшенная старинными металлическими пластинами и заклепками. Дверь заперта.";
+          choice1Scene = 10;
+          choice2Scene = 3;
+
+          switch (key) {
+            case 1:
+              choice1.innerText = "Открыть дверь";
+              choice1.style = "display: block";
+              break;
+          }
+          choice2.innerText = "Вернуться.";
+          choice2.style = "display: block";
+          break;
+
+        case 10:
+          img.src = "scene10.png";
+          description.innerText =
+            "Открыв дверь на вас сразу обращает внимание огромный орк, находящийся там. От резко достал меч и ринулся к вам. В этот момент вы поняли, что в ближайшее время в живых из вас двоих останется только один. Вооружившись кинжалом, вы делаете резкий рывок вперед, стараясь избежать ударов его тяжелого меча. Орк рычит и решается нанести сокрушительный удар. В этот момент вы замечаете, что из-за того, что он высоко поднял меч, у вас появилась возможность нанести удар под ребро.";
+
+          choice1.innerText = "Рискнуть и атаковать слабое место.";
+          choice1.style = "display = block";
+          switch (runAway) {
+            case 0:
+              choice1Scene = 12;
+              break;
+            case 1:
+              choice1Scene = 11;
+              break;
+          }
+
+          choice2Scene = 13;
+          choice2.innerText = "Увернуться.";
+          choice2.style = "display = block";
+          break;
+
+        case 11:
+          img.src = "death.jpg";
+          description.innerText =
+            "Сделав рывок вперед, ваша раненая нога подводит вас, вы оступаетесь и не успеваете провести атаку. В последнюю секунду своей жизни вы замечаете огромный меч стремительно приближающийся к вашей голове.\n **Финал:** Ваше приключение закончилось трагически. Вы погибли в бою с главным боссом подземелья. Но кто знает, возможно, в следующей жизни вам удастся преодолеть все трудности и выйти победителем?";
+          break;
+
+        case 12:
+          img.src = "scene12.png";
+          description.innerText =
+            "Вы направляетесь прямо к слабому месту орка и наносите точный удар своим кинжалом. Орк вскрикивает от боли и падает на колени. Воспользовавшись моментом, вы добиваете его последним ударом. Поднявшись над поверженным врагом, вы чувствуете себя победителем. В зале появляется свет, и вы видите, что путь наружу открыт.\n **Финал:** Вы успешно завершили свое путешествие по подземелью и нашли выход. Теперь перед вами открываются новые горизонты и приключения.";
+          break;
+
+        case 13:
+          img.src = "death.jpg";
+          description.innerText =
+            "Вам удается увернуться от удара, но не промедлив и секунды орк делает рывок вперед и наносит колющий удар протыкая вас насквозь. Вы соскальзываете с его меча и падаете на землю. Орк поднимает свой меч для последнего удара... \n **Финал:** Ваше приключение закончилось трагически. Вы погибли в бою с главным боссом подземелья. Но кто знает, возможно, в следующей жизни вам удастся преодолеть все трудности и выйти победителем?";
+          break;
+      }
+
+      function updateHistory(sceneText, decisionText) {
+      if (curScene > 0){
+      const listItem = document.createElement("li");
+      listItem.innerHTML = `<strong>Сцена:</strong> ${sceneText} <br><strong>Решение:</strong> ${decisionText}`;
+      historyList.appendChild(listItem);
+      }
+    }
+
+      updateHistory(prevDescription, decisionText);
+      
+    }
+  </script>
+</html>

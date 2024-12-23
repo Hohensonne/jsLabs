@@ -22,11 +22,58 @@
   </head>
   <body>
     <div id="studentList"></div>
-    <br />
     <button class="btn btn-primary" onclick="displayStudentInfo()">
       Получить информацию о студенте
     </button>
     <p id="studentInfo"></p>
+
+    <div class="form-container">
+      <h2>Добавить студента</h2>
+      <div class="mt-3">
+        <label for="fullName" class="form-label">ФИО:</label>
+        <input type="text" id="fullName" class="form-control"/>
+      </div>
+      <div id="error-message" style="color: red; display: none">
+        ФИО должно быть длиной от 7 до 128 символов и содержать ровно два
+        пробела.
+      </div>
+
+      <div class="mt-3">
+        <label for="birthYear" class="form-label">Год рождения:</label>
+        <select id="birthYear" class="form-select"></select>
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label">Пол:</label><br />
+        <input type="radio" name="gender" value="Муж" id="male" checked/>
+        <label for="male">Мужской</label><br />
+        <input type="radio" name="gender" value="Жен" id="female"/>
+        <label for="female">Женский</label>
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label">Тип обучения:</label><br />
+        <input
+          type="radio"
+          name="studyType"
+          value="Очно"
+          id="fullTime"
+          checked
+        />
+        <label for="fullTime">Очно</label><br />
+        <input
+          type="radio"
+          name="studyType"
+          value="Заочно"
+          id="partTime"
+        />
+        <label for="partTime">Заочно</label>
+      </div>
+
+      <button class="btn btn-primary mt-4" onclick="addStudent()">
+        Зачислить в группу
+      </button>
+    </div>
 
     <script>
       const commonstudent = {
@@ -40,7 +87,13 @@
           return currentYear - this.birthYear;
         },
         getInfo() {
-          return `Студент ${this.fullName} обучается в институте ${this.university}, в группе ${this.group}.  данный момент он находится на курсе ${this.course}.`;
+          let pronounse;
+          if (this.gender == "Муж") {
+            pronounse = "он";
+          } else {
+            pronounse = "она";
+          }
+          return `Студент ${this.fullName} обучается в институте ${this.university}, в группе ${this.group}.  данный момент ${pronounse} находится на курсе ${this.course}.`;
         },
       };
 
@@ -50,7 +103,6 @@
       student01.gender = "Муж";
       student01.financial = "Бюджет";
 
-      
       const student02 = Object.create(commonstudent);
       student02.fullName = "Хрусталев Михаил Евгеньевич";
       student02.birthYear = 2003;
@@ -64,11 +116,17 @@
       student03.gender = "Муж";
       student03.financial = "Бюджеты";
 
-      const students = { student01, student02, student03 };
+      const students = [student01, student02, student03];
 
       const studentList = document.getElementById("studentList");
-      for (let key in students) {
-        studentList.innerHTML += `<p>${key}: ${students[key].fullName}</p>`;
+      updateStudentList();
+      function updateStudentList() {
+        studentList.innerHTML = "";
+        students.forEach((student, index) => {
+          studentList.innerHTML += `<p>student${index + 1}: ${
+            student.fullName
+          }</p>`;
+        });
       }
 
       function displayStudentInfo() {
@@ -85,6 +143,50 @@
         if (!studentFound) {
           studentInfo.innerHTML = "Студент не найден";
         }
+      }
+
+      const birthYearSelect = document.getElementById("birthYear");
+      const currentYear = new Date().getFullYear();
+      for (let year = currentYear - 10; year >= currentYear - 100; year--) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        birthYearSelect.appendChild(option);
+      }
+
+      function addStudent() {
+        const fullName = document.getElementById("fullName").value;
+        const birthYear = parseInt(
+          document.getElementById("birthYear").value,
+          10
+        );
+        const gender = document.querySelector(
+          "input[name='gender']:checked"
+        ).value;
+        const studyType = document.querySelector(
+          "input[name='studyType']:checked"
+        ).value;
+        const errorMessage = document.getElementById("error-message");
+
+        const valid = /^[a-zA-Zа-яА-Я]* [a-zA-Zа-яА-Я]* [a-zA-Zа-яА-Я]*$/.test(
+          fullName
+        );
+
+        if (fullName.length < 7 || fullName.length > 128 || !valid) {
+          errorMessage.style.display = "block";
+          return;
+        }
+        errorMessage.style.display = "none";
+
+        const newStudent = Object.create(commonstudent);
+        newStudent.fullName = fullName;
+        newStudent.birthYear = birthYear;
+        newStudent.gender = gender;
+        newStudent.studyType = studyType;
+
+        students.push(newStudent);
+        updateStudentList();
+        e.target.reset();
       }
     </script>
   </body>
